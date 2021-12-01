@@ -102,12 +102,243 @@ Observables
     }
   ```
   
+  ```javascript
   
+  import { Component } from '@angular/core';
+
+import { HEROES } from './hero';
+
+@Component({
+  selector: 'app-hero-parent',
+  template: `
+    <h2>{{master}} controls {{heroes.length}} heroes</h2>
+
+    <app-hero-child
+      *ngFor="let hero of heroes"
+      [hero]="hero"
+      [master]="master">
+    </app-hero-child>
+  `
+})
+export class HeroParentComponent {
+  heroes = HEROES;
+  master = 'Master';
+}
+  
+  ```
+<p> Intercept input property changes with a setter </p>
+  
+  ```javascript
+  import { Component, Input } from '@angular/core';
+
+@Component({
+  selector: 'app-name-child',
+  template: '<h3>"{{name}}"</h3>'
+})
+export class NameChildComponent {
+  @Input()
+  get name(): string { return this._name; }
+  set name(name: string) {
+    this._name = (name && name.trim()) || '<no name set>';
+  }
+  private _name = '';
+}
+  
+  ```
+ ```javascript
+  import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-name-parent',
+  template: `
+    <h2>Master controls {{names.length}} names</h2>
+
+    <app-name-child *ngFor="let name of names" [name]="name"></app-name-child>
+  `
+})
+export class NameParentComponent {
+  // Displays 'Dr IQ', '<no name set>', 'Bombasto'
+  names = ['Dr IQ', '   ', '  Bombasto  '];
+}
+  ```
+  
+  <p>Intercept input property changes with ngOnChanges()</p>
+  ```javascript
+  import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+
+@Component({
+  selector: 'app-version-child',
+  template: `
+    <h3>Version {{major}}.{{minor}}</h3>
+    <h4>Change log:</h4>
+    <ul>
+      <li *ngFor="let change of changeLog">{{change}}</li>
+    </ul>
+  `
+})
+export class VersionChildComponent implements OnChanges {
+  @Input() major = 0;
+  @Input() minor = 0;
+  changeLog: string[] = [];
+
+  ngOnChanges(changes: SimpleChanges) {
+    const log: string[] = [];
+    for (const propName in changes) {
+      const changedProp = changes[propName];
+      const to = JSON.stringify(changedProp.currentValue);
+      if (changedProp.isFirstChange()) {
+        log.push(`Initial value of ${propName} set to ${to}`);
+      } else {
+        const from = JSON.stringify(changedProp.previousValue);
+        log.push(`${propName} changed from ${from} to ${to}`);
+      }
+    }
+    this.changeLog.push(log.join(', '));
+  }
+}
+  ```
+  ```javascript
+  import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-version-parent',
+  template: `
+    <h2>Source code version</h2>
+    <button (click)="newMinor()">New minor version</button>
+    <button (click)="newMajor()">New major version</button>
+    <app-version-child [major]="major" [minor]="minor"></app-version-child>
+  `
+})
+export class VersionParentComponent {
+  major = 1;
+  minor = 23;
+
+  newMinor() {
+    this.minor++;
+  }
+
+  newMajor() {
+    this.major++;
+    this.minor = 0;
+  }
+}
+  ```
+  <p>Parent listens for child event</p>
+  ```javascript
+  import { Component, EventEmitter, Input, Output } from '@angular/core';
+
+@Component({
+  selector: 'app-voter',
+  template: `
+    <h4>{{name}}</h4>
+    <button (click)="vote(true)"  [disabled]="didVote">Agree</button>
+    <button (click)="vote(false)" [disabled]="didVote">Disagree</button>
+  `
+})
+export class VoterComponent {
+  @Input()  name = '';
+  @Output() voted = new EventEmitter<boolean>();
+  didVote = false;
+
+  vote(agreed: boolean) {
+    this.voted.emit(agreed);
+    this.didVote = true;
+  }
+}
+  ```
+  ```javascript
+  import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-vote-taker',
+  template: `
+    <h2>Should mankind colonize the Universe?</h2>
+    <h3>Agree: {{agreed}}, Disagree: {{disagreed}}</h3>
+
+    <app-voter
+      *ngFor="let voter of voters"
+      [name]="voter"
+      (voted)="onVoted($event)">
+    </app-voter>
+  `
+})
+export class VoteTakerComponent {
+  agreed = 0;
+  disagreed = 0;
+  voters = ['Narco', 'Celeritas', 'Bombasto'];
+
+  onVoted(agreed: boolean) {
+    agreed ? this.agreed++ : this.disagreed++;
+  }
+}
+  ```
+  <p>Parent interacts with child using local variable</p>
+  ```javascript
+  import { Component } from '@angular/core';
+import { CountdownTimerComponent } from './countdown-timer.component';
+
+@Component({
+  selector: 'app-countdown-parent-lv',
+  template: `
+    <h3>Countdown to Liftoff (via local variable)</h3>
+    <button (click)="timer.start()">Start</button>
+    <button (click)="timer.stop()">Stop</button>
+    <div class="seconds">{{timer.seconds}}</div>
+    <app-countdown-timer #timer></app-countdown-timer>
+  `,
+  styleUrls: ['../assets/demo.css']
+})
+export class CountdownLocalVarParentComponent { }
+  ```
+  <p>
+  Place a local variable, #timer, on the tag <countdown-timer> representing the child component. That gives you a reference to the child component and the ability to access any of its properties or methods from within the parent template.
+  </p>
+    
+    <p>Parent calls an @ViewChild()</p>
+  ```javascript
+  import { AfterViewInit, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
+import { CountdownTimerComponent } from './countdown-timer.component';
+
+@Component({
+  selector: 'app-countdown-parent-vc',
+  template: `
+    <h3>Countdown to Liftoff (via ViewChild)</h3>
+    <button (click)="start()">Start</button>
+    <button (click)="stop()">Stop</button>
+    <div class="seconds">{{ seconds() }}</div>
+    <app-countdown-timer></app-countdown-timer>
+  `,
+  styleUrls: ['../assets/demo.css']
+})
+export class CountdownViewChildParentComponent implements AfterViewInit {
+
+  @ViewChild(CountdownTimerComponent)
+  private timerComponent!: CountdownTimerComponent;
+
+  seconds() { return 0; }
+
+  ngAfterViewInit() {
+    // Redefine `seconds()` to get from the `CountdownTimerComponent.seconds` ...
+    // but wait a tick first to avoid one-time devMode
+    // unidirectional-data-flow-violation error
+    setTimeout(() => this.seconds = () => this.timerComponent.seconds, 0);
+  }
+
+  start() { this.timerComponent.start(); }
+  stop() { this.timerComponent.stop(); }
+}
+  ```
+ <p>Parent and children communicate using a service</p>
+  ```javascript
+  
+  ```
+    
 </details>
   
   
 
-##### 
+#####  What is subject and its types?
 <details><summary><b>Answer</b></summary>
 <p></p>
 </details>
