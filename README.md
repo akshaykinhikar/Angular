@@ -161,8 +161,9 @@ export class NameParentComponent {
   names = ['Dr IQ', '   ', '  Bombasto  '];
 }
   ```
-  
-  <p>Intercept input property changes with ngOnChanges()</p>
+
+<p>Intercept input property changes with ngOnChanges()</p>
+
   ```javascript
   import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
@@ -223,7 +224,9 @@ export class VersionParentComponent {
   }
 }
   ```
-  <p>Parent listens for child event</p>
+  
+<p>Parent listens for child event</p>
+  
   ```javascript
   import { Component, EventEmitter, Input, Output } from '@angular/core';
 
@@ -272,7 +275,9 @@ export class VoteTakerComponent {
   }
 }
   ```
-  <p>Parent interacts with child using local variable</p>
+  
+<p>Parent interacts with child using local variable</p>
+
   ```javascript
   import { Component } from '@angular/core';
 import { CountdownTimerComponent } from './countdown-timer.component';
@@ -290,11 +295,10 @@ import { CountdownTimerComponent } from './countdown-timer.component';
 })
 export class CountdownLocalVarParentComponent { }
   ```
-  <p>
-  Place a local variable, #timer, on the tag <countdown-timer> representing the child component. That gives you a reference to the child component and the ability to access any of its properties or methods from within the parent template.
-  </p>
+  <p>Place a local variable, #timer, on the tag <countdown-timer> representing the child component. That gives you a reference to the child component and the ability to access any of its properties or methods from within the parent template. </p>
     
     <p>Parent calls an @ViewChild()</p>
+  
   ```javascript
   import { AfterViewInit, ViewChild } from '@angular/core';
 import { Component } from '@angular/core';
@@ -329,8 +333,10 @@ export class CountdownViewChildParentComponent implements AfterViewInit {
   stop() { this.timerComponent.stop(); }
 }
   ```
- <p>Parent and children communicate using a service</p>
-  ```javascript
+ 
+<p>Parent and children communicate using a service</p>
+  
+ ```javascript
   
   ```
     
