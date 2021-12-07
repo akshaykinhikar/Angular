@@ -350,19 +350,35 @@ export class CountdownViewChildParentComponent implements AfterViewInit {
 </details>
 
 
-##### 
+##### Difference between Angularjs and Angular 2+?
 <details><summary><b>Answer</b></summary>
-<p></p>
+<ul>
+  <li>removed $rootscope</li>
+  <li>better compilation</li>
+  <li>cli added</li>
+  <li>component based structure</li>
+  <li>es5/6 introduced to support Object Oriented approach</li>
+</ul>
 </details>
   
 
-##### 
+##### How to many ways are to create decorators?
 <details><summary><b>Answer</b></summary>
-<p></p>
+<ol>
+  <li><b>Class decorator</b> @component @module </li>
+  <li><b>Property</b> decorator @input @output </li>
+  <li><b>Method</b> decorator @hostlistener </li>
+  <li><b>Parameter</b> @inject </li>
+<ol>
 </details>
   
 
-##### 
+##### How will your application run fast based on performance?
 <details><summary><b>Answer</b></summary>
-<p></p>
+<ul>
+  <li> remove change detection</li>
+  <li> AOT </li>
+  <li> lazy loading </li>
+  <li> server side rendering </li>
+  <li> web services to catching data </li>
 </details>
