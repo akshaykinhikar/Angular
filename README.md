@@ -2,7 +2,10 @@
 ##### What is pipe? what is difference in pure and impure pipes?
 
 <details><summary><b>Answer</b></summary>
-<p>The hero's birthday is {{ birthday | date | uppercase}}</p>
+<p>Suppose we want to perform some operation on array/element and return subset of array/element by performing some operation, in such scenario 
+  we use pipe to filter or modify array/element and display corresponsing row/rows in UI.
+  
+The hero's birthday is {{ birthday | date | uppercase}}</p>
 
   
   ##### Creating pipes for custom data transformations
