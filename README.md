@@ -47,13 +47,14 @@ export class RetryInterceptor implements HttpInterceptor {
     return next.handle(httpRequest).pipe(retry(2));
   }
 }
-  ```javascript
+  ```
   <p> In app module, provide interceptor </p>
-```
+
+  ```javascript
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: MyInterceptor, multi: true }
   ]
-```
+  ```
   <p>source: https://ultimatecourses.com/blog/intro-to-angular-http-interceptors</p>
 </details>
 
