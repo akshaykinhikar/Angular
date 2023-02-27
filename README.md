@@ -47,7 +47,7 @@ export class RetryInterceptor implements HttpInterceptor {
     return next.handle(httpRequest).pipe(retry(2));
   }
 }
-  ```
+  ```javascript
   <p> In app module, provide interceptor </p>
 ```
   providers: [
