@@ -48,6 +48,12 @@ export class RetryInterceptor implements HttpInterceptor {
   }
 }
   ```
+  <p> In app module, provide interceptor </p>
+```
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: MyInterceptor, multi: true }
+  ]
+```
   <p>source: https://ultimatecourses.com/blog/intro-to-angular-http-interceptors</p>
 </details>
 
