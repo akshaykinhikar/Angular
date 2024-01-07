@@ -379,7 +379,7 @@ export class CountdownViewChildParentComponent implements AfterViewInit {
   <li><b>Property</b> decorator @input @output </li>
   <li><b>Method</b> decorator @hostlistener </li>
   <li><b>Parameter</b> @inject </li>
-<ol>
+</ol>ol>
 </details>
   
 
@@ -391,4 +391,51 @@ export class CountdownViewChildParentComponent implements AfterViewInit {
   <li> lazy loading </li>
   <li> server side rendering </li>
   <li> web services to catching data </li>
+</ul>
+</details>
+
+##### MergeMap vs forkJoin OR How to use mergeMap and forkJoin to handle multiple API requests in Angular?
+<details><summary><b>Answer</b></summary>
+  
+```javascript
+  
+  //Subscribe
+
+  getData() {
+      http.get('')
+          .pipe.map(data => data) // if we want to transform/select chunk of data
+          .subscribe(data => { 
+              http.get(''+data).subscribe(data => data); //nested call 
+          })
+  }
+  
+  //MergeMap
+  getData() {
+      http.get('').pipe(
+          map((res) => {
+              return res
+          }),
+          mergeMap(res => {
+              http.get('')
+          })
+      ).subscribe(res => {
+          this.data = data
+      });
+  }
+  
+  //forkJoin
+  const API1 = http.get();
+  const API2 = http.get();
+  
+  forkJoin([API1, API2]).subscribe({
+      next: (res) => {
+          API1Data = res[0];
+          API2Data = res[1];
+      },
+      error: err => {console.log(err)},
+  })
+
+//reference: https://dev.to/mana95/how-to-use-mergemap-and-forkjoin-to-handle-multiple-api-requests-in-angular-412p
+```
+
 </details>
