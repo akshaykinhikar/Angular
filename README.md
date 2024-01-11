@@ -441,5 +441,19 @@ export class CountdownViewChildParentComponent implements AfterViewInit {
 </details>
 
 
-##### Other Question
+##### What is badgets in Angular OR WARNING in budgets, maximum exceeded for initial
+<details><summary><b>Answer</b></summary>
+<p>Open angular.json file and find budgets keyword</p>
+  
+```javascript
+
+ "budgets": [
+       {
+          "type": "initial",
+          "maximumWarning": "2mb",
+          "maximumError": "5mb"
+       }
+    ]
+```
 <a href="https://stackoverflow.com/questions/53995948/warning-in-budgets-maximum-exceeded-for-initial"> Budgets </a>
+</details>
